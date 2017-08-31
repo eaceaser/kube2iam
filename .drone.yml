@@ -1,0 +1,36 @@
+workspace:
+  base: /go
+  # Preserve the upstream path for Go
+  path: src/github.com/jtblin/kube2iam
+
+pipeline:
+  test:
+    image: golang:1.8.3
+    commands:
+      - make setup
+      - make test
+
+  build:
+    image: golang:1.8.3
+    commands:
+      - make cross REPO_VERSION=${DRONE_TAG} DOCKER_REPO=258875347723.dkr.ecr.us-east-1.amazonaws.com
+    when:
+      event: tag
+
+  publish:
+    image: plugins/ecr
+    repo: 258875347723.dkr.ecr.us-east-1.amazonaws.com/kube2iam
+    registry: 258875347723.dkr.ecr.us-east-1.amazonaws.com
+    region: us-east-1
+    tags: ${DRONE_TAG}
+    when:
+      event: tag
+
+  notify:
+    image: plugins/slack
+    channel: infra-salon
+    secrets: [ SLACK_WEBHOOK ]
+    when:
+      event: [ push, tag ]
+      branch: pkg
+      status: [ success, failure ]
