@@ -5,13 +5,13 @@ workspace:
 
 pipeline:
   test:
-    image: golang:1.8.3
+    image: golang:1.9
     commands:
       - make setup
       - make test
 
   build:
-    image: golang:1.8.3
+    image: golang:1.9
     commands:
       - make cross REPO_VERSION=${DRONE_TAG} DOCKER_REPO=258875347723.dkr.ecr.us-east-1.amazonaws.com
     when:
