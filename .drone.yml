@@ -18,7 +18,7 @@ pipeline:
       event: tag
 
   publish:
-    image: plugins/ecr
+    image: 258875347723.dkr.ecr.us-east-1.amazonaws.com/drone-plugin-docker-ecr
     repo: 258875347723.dkr.ecr.us-east-1.amazonaws.com/kube2iam
     registry: 258875347723.dkr.ecr.us-east-1.amazonaws.com
     region: us-east-1
